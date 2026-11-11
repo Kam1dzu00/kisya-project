@@ -15,6 +15,7 @@
 - Подборки приходят в Telegram по расписанию: раз в 1, 2, 3, 6, 12 или 24 часа, 1–20 вакансий за раз, без уведомлений ночью.
 - Мини-приложение: лента за последние 2 недели, избранное, скрытие неподходящего, ссылки на биржи под свою профессию.
 - Ссылки ведут на сайт работодателя, а не на платные агрегаторы.
+- Бот и мини-приложение на двух языках: после /start пользователь выбирает русский или английский.
 - Бот не откликается за пользователя. ИИ-помощник для отклика по резюме — в разработке.
 
 ## Как начать
@@ -26,10 +27,11 @@
 ## Страницы
 
 - [Главная](https://kam1dzu00.github.io/kisya-project/): что такое Kisya Project и как он работает
+- [English page](https://kam1dzu00.github.io/kisya-project/en/): Kisya Project in English
 - [Работа графическим дизайнером удалённо](https://kam1dzu00.github.io/kisya-project/rabota-dizajnerom-udalenno.html): где искать удалённые вакансии дизайнеру и иллюстратору
 - [Вакансии в Telegram-каналах](https://kam1dzu00.github.io/kisya-project/vakansii-v-telegram-kanalah.html): как искать работу в Telegram без рекламы курсов
 - [Где искать работу, кроме hh.ru](https://kam1dzu00.github.io/kisya-project/gde-iskat-rabotu-krome-hh.html): альтернативные источники вакансий
 
 ## English
 
-Kisya Project (https://t.me/KisyaProject_Bot) is a Telegram job-search bot and mini app. It aggregates fresh job postings from 700+ Telegram job channels, employer career sites worldwide (Greenhouse, Lever, Ashby, Workday and more), Hacker News “Who is hiring” and remote job boards, and sends users only the postings that match their profile: profession, remote or a city, Russian- or English-language postings, minimum salary. Works for any profession.
+Kisya Project (https://t.me/KisyaProject_Bot) is a Telegram job-search bot and mini app. It aggregates fresh job postings from 700+ Telegram job channels, employer career sites worldwide (Greenhouse, Lever, Ashby, Workday and more), Hacker News “Who is hiring” and remote job boards, and sends users only the postings that match their profile: profession, remote or a city, Russian- or English-language postings, minimum salary. Works for any profession. The bot and the mini app are available in English and Russian (chosen right after /start).
