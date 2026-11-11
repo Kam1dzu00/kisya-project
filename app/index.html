@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кабинет — Kisya Project</title>
+<meta name="description" content="Кабинет Kisya Project в браузере: вход через Telegram, та же анкета, лента вакансий и избранное, что в боте @KisyaProject_Bot.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://kam1dzu00.github.io/kisya-project/app/">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .box{max-width:520px;margin:40px auto;text-align:center}
+  .box .btn{display:inline-block;margin:6px}
+  #widget{min-height:48px;margin:18px 0}
+  .muted{opacity:.7;font-size:15px}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="logo" href="../">● Kisya Project</a><a class="btn" href="https://t.me/KisyaProject_Bot" data-t="tg">Открыть в Telegram</a></div></header>
+<main class="wrap">
+  <div class="box">
+    <h1 data-t="h1">Кабинет</h1>
+
+    <div id="checking"><p data-t="checking">Подключаюсь к кабинету…</p></div>
+
+    <div id="login" hidden>
+      <p data-t="lead">Войди через Telegram — без паролей. Анкета, лента и избранное те же, что в боте.</p>
+      <div id="widget"></div>
+      <p class="muted" data-t="hint">Telegram спросит, можно ли боту писать тебе, — разреши, чтобы подборки приходили в чат.</p>
+      <p><a class="btn" href="https://t.me/KisyaProject_Bot" data-t="tg2">Или открыть в Telegram</a></p>
+    </div>
+
+    <div id="asleep" hidden>
+      <p data-t="asleep">Кабинет сейчас отдыхает — компьютер, на котором он работает, выключен. Загляни чуть позже.</p>
+      <p><a class="btn" href="../vakansii.html" data-t="jobs">Свежие вакансии</a> <a class="btn" href="https://t.me/KisyaProject_Bot" data-t="tg3">Открыть бота</a></p>
+      <p class="muted" data-t="asleep2">Бот ответит, как только кабинет проснётся.</p>
+    </div>
+
+    <p id="error" class="muted" hidden></p>
+  </div>
+</main>
+<footer><div class="wrap"><a href="../" data-t="home">Главная</a><a href="../vakansii.html" data-t="jobs2">Вакансии</a><a href="https://t.me/KisyaProject_Bot">Telegram</a><br>© Kisya Project</div></footer>
+<script>
+(function () {
+  'use strict';
+  var en = /(^|[?&])lang=en/.test(location.search) || (!/(^|[?&])lang=ru/.test(location.search) && !/^(ru|uk|be|kk)/i.test(navigator.language || 'ru'));
+  var EN = {
+    tg: 'Open in Telegram', h1: 'Your Kisya app', checking: 'Connecting to the app…',
+    lead: 'Log in with Telegram — no passwords. Same profile, feed and favorites as in the bot.',
+    hint: 'Telegram will ask whether the bot may message you — allow it so job picks arrive in the chat.',
+    tg2: 'Or open in Telegram', asleep: 'The app is resting right now — the computer it runs on is off. Please check back a bit later.',
+    jobs: 'Fresh jobs', tg3: 'Open the bot', asleep2: 'The bot will answer as soon as the app wakes up.', home: 'Home', jobs2: 'Jobs',
+  };
+  if (en) {
+    document.documentElement.lang = 'en'; document.title = 'Your app — Kisya Project';
+    document.querySelectorAll('[data-t]').forEach(function (el) { if (EN[el.dataset.t]) el.textContent = EN[el.dataset.t]; });
+    document.querySelectorAll('a[href="../vakansii.html"]').forEach(function (a) { a.href = '../en/jobs.html'; });
+    document.querySelector('a.logo').href = '../en/';
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY = 'kisya.session';
+  var get = function () { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
+  var put = function (v) { try { if (v) localStorage.setItem(KEY, v); else localStorage.removeItem(KEY); } catch (e) { /* private mode */ } };
+  function show(id) { ['checking', 'login', 'asleep'].forEach(function (x) { $(x).hidden = x !== id; }); }
+  function fail(msg) { $('error').textContent = msg; $('error').hidden = false; }
+  function withTimeout(p, ms) { return Promise.race([p, new Promise(function (_, rej) { setTimeout(function () { rej(new Error('timeout')); }, ms); })]); }
+
+  var hub = null;
+  function go(session) { location.replace(hub + (en ? '?lang=en' : '') + '#s=' + encodeURIComponent(session)); }
+
+  // Telegram Login Widget callback
+  window.onTelegramAuth = function (user) {
+    show('checking');
+    withTimeout(fetch(hub + 'api/hub/web-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(user) }), 15000)
+      .then(function (r) { return r.json().then(function (b) { if (!r.ok || !b.session) throw new Error(b.error || ('HTTP ' + r.status)); return b; }); })
+      .then(function (b) { put(b.session); go(b.session); })
+      .catch(function (e) { show('login'); fail((en ? 'Could not log in: ' : 'Не получилось войти: ') + e.message); });
+  };
+  function widget() {
+    var s = document.createElement('script');
+    s.async = true; s.src = 'https://telegram.org/js/telegram-widget.js?22';
+    s.setAttribute('data-telegram-login', 'KisyaProject_Bot');
+    s.setAttribute('data-size', 'large');
+    s.setAttribute('data-radius', '0');
+    s.setAttribute('data-request-access', 'write');
+    s.setAttribute('data-onauth', 'onTelegramAuth(user)');
+    if (en) s.setAttribute('data-lang', 'en'); else s.setAttribute('data-lang', 'ru');
+    $('widget').replaceChildren(s);
+  }
+
+  withTimeout(fetch('../hub.json?t=' + Date.now(), { cache: 'no-store' }), 10000)
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!/^https:\/\/[^\s"<>]+\/$/.test(j.url || '')) throw new Error('no url');
+      hub = j.url;
+      return withTimeout(fetch(hub + 'health', { cache: 'no-store' }), 8000).then(function (r) { if (!r.ok) throw new Error('down'); });
+    })
+    .then(function () {
+      if (/(^|[?&])logout=1/.test(location.search)) put(null);
+      var s = get();
+      if (s) return go(s);
+      show('login'); widget();
+    })
+    .catch(function () { show('asleep'); });
+}());
+</script>
+</body>
+</html>

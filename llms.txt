@@ -28,6 +28,9 @@
 
 - [Главная](https://kam1dzu00.github.io/kisya-project/): что такое Kisya Project и как он работает
 - [English page](https://kam1dzu00.github.io/kisya-project/en/): Kisya Project in English
+- [Свежие удалённые вакансии](https://kam1dzu00.github.io/kisya-project/vakansii.html): витрина свежих удалённых вакансий на русском по направлениям, обновляется каждые несколько часов
+- [Fresh remote jobs](https://kam1dzu00.github.io/kisya-project/en/jobs.html): fresh English-language remote jobs by field, updated every few hours
+- [Кабинет в браузере](https://kam1dzu00.github.io/kisya-project/app/): тот же кабинет, что в Telegram, вход через Telegram
 - [Работа графическим дизайнером удалённо](https://kam1dzu00.github.io/kisya-project/rabota-dizajnerom-udalenno.html): где искать удалённые вакансии дизайнеру и иллюстратору
 - [Вакансии в Telegram-каналах](https://kam1dzu00.github.io/kisya-project/vakansii-v-telegram-kanalah.html): как искать работу в Telegram без рекламы курсов
 - [Где искать работу, кроме hh.ru](https://kam1dzu00.github.io/kisya-project/gde-iskat-rabotu-krome-hh.html): альтернативные источники вакансий
